@@ -1,32 +1,33 @@
 <?php require_once ('templates/header1.php');
-
+require_once ('function.php'); 
+$db = new Database();
 ?>
 
 <section class="hero-section set-bg" data-setbg="<?php echo BASE_URL;?>assets/bootstrap/img/bg.jpg">
-		<div class="hero-slider owl-carousel">
-			<div class="hs-item">
-				<div class="hs-left"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/slider-img.png" alt=""></div>
-				<div class="hs-right">
-					<div class="hs-content">
-						<div class="price">from $19.90</div>
-						<h2><span>2018</span> <br>summer collection</h2>
-						<a href="" class="site-btn">Shop NOW!</a>
-					</div>	
-				</div>
-			</div>
-			<div class="hs-item">
-				<div class="hs-left"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/slider-img.png" alt=""></div>
-				<div class="hs-right">
-					<div class="hs-content">
-						<div class="price">from $19.90</div>
-						<h2><span>2018</span> <br>summer collection</h2>
-						<a href="" class="site-btn">Shop NOW!</a>
-					</div>	
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Hero section end -->
+    <div class="hero-slider owl-carousel">
+        <div class="hs-item">
+            <div class="hs-left"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/slider-img.png" alt=""></div>
+            <div class="hs-right">
+                <div class="hs-content">
+                    <div class="price">from $19.90</div>
+                    <h2><span>2018</span> <br>summer collection</h2>
+                    <a href="" class="site-btn">Shop NOW!</a>
+                </div>    
+            </div>
+        </div>
+        <div class="hs-item">
+            <div class="hs-left"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/slider-img.png" alt=""></div>
+            <div class="hs-right">
+                <div class="hs-content">
+                    <div class="price">from $19.90</div>
+                    <h2><span>2018</span> <br>summer collection</h2>
+                    <a href="" class="site-btn">Shop NOW!</a>
+                </div>    
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero section end -->
 
 	
 	<!-- Intro section -->
