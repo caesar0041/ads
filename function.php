@@ -31,7 +31,7 @@ class User {
         }
     }
 
-    public function createUser($username, $first_name, $last_name, $hashed_password) {
+    public function save($username, $first_name, $last_name, $hashed_password) {
         try {
             $query = $this->conn->prepare('CALL CreateUser(:username, :first_name, :last_name, :password);');
             $query->bindParam(':username', $username);

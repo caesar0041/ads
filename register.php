@@ -11,7 +11,7 @@ if (isset($_POST['save'])) {
 
         $db = new Database();
         $user = new User($db->connect());
-        if ($user->createUser($username, $first_name, $last_name, $hashed_password)) {
+        if ($user->save($username, $first_name, $last_name, $hashed_password)) {
             header('Location:' . BASE_URL . 'index.php?success=1');
             exit;
         } else {
