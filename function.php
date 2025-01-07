@@ -38,16 +38,40 @@ class User {
             $query->bindParam(':first_name', $first_name);
             $query->bindParam(':last_name', $last_name);
             $query->bindParam(':password', $hashed_password);
-            
-            if ($query->execute()) {
-                return true;
+
+            return $query->execute();
+        } catch (PDOException $e) {
+            error_log("Error in save function: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function authenticate($username, $password) {
+        try {
+            $query = $this->conn->prepare("CALL AuthenticateUser(:username);");
+            $query->bindParam(':username', $username);
+            $query->execute();
+    
+            if ($query->rowCount() > 0) {
+                $user = $query->fetch(PDO::FETCH_ASSOC);
+                error_log("Password from DB: " . $user['pw']);
+                error_log("Password entered: " . $password);
+    
+                if (password_verify($password, $user['pw'])) {
+                    error_log("Password verification successful.");
+                //    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+    
+                    return $user;
+                } else {
+                    error_log("Password verification failed.");
+                }
             } else {
-                print_r($query->errorInfo());
+                error_log("No user found with username: $username");
             }
         } catch (PDOException $e) {
-            echo "PDOException: " . $e->getMessage();
+            error_log("Error in authenticate function: " . $e->getMessage());
         }
         return false;
     }
+    
 }
- 

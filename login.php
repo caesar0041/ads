@@ -1,13 +1,39 @@
-<?php require_once('templates/header1.php'); ?>
-<section class="hero-section set-bg" data-setbg="<?php echo BASE_URL;?>assets/bootstrap/img/bg.jpg">
+<?php
+//session_start();
+require_once('templates/header1.php');
+require_once 'function.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $users = new User();
+        $user = $users->authenticate($username, $password);
+
+        if ($user) {
+//            $_SESSION['logged_in'] = true;
+//            $_SESSION['user'] = $user;
+            header('Location: ' . BASE_URL . 'admin_dashboard/index.php?success=1');
+            exit;
+        } else {
+            $error_message = "Invalid username or password. Please try again.";
+        }
+    }
+}
+?>
+<section class="hero-section set-bg" data-setbg="<?php echo BASE_URL; ?>assets/bootstrap/img/bg.jpg">
 <div class="page-area login-page">
     <div class="container spad">
         <div class="text-center">
             <h4 class="contact-title">Login to Your Account</h4>
         </div>
-        <form class="login-form" method="post" action="login_handler.php">
+        <form class="login-form" method="post" action="">
             <div class="row justify-content-center">
                 <div class="col-md-6">
+                    <?php if (isset($error_message)) : ?>
+                        <div class="alert alert-danger" role="alert"><?php echo $error_message; ?></div>
+                    <?php endif; ?>
                     <div class="form-group">
                         <label for="username">Username *</label>
                         <input id="username" name="username" type="text" class="form-control" placeholder="Enter your username" required>
@@ -17,7 +43,7 @@
                         <input id="password" name="password" type="password" class="form-control" placeholder="Enter your password" required>
                     </div>
                     <div class="text-center">
-                        <button class="site-btn btn-primary" type="submit">Login</button>
+                        <button class="site-btn btn-primary" type="submit" name="save">Login</button>
                     </div>
                     <div class="text-center mt-3">
                         <a href="forgot_password.php">Forgot your password?</a>
@@ -31,5 +57,4 @@
     </div>
 </div>
 </section>
-
 <?php require_once('templates/footer1.php'); ?>
