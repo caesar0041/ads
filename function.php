@@ -58,9 +58,7 @@ class User {
                 error_log("Password entered: " . $password);
     
                 if (password_verify($password, $user['pw'])) {
-                    error_log("Password verification successful.");
-                //    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-    
+                    error_log("Password verification successful.");    
                     return $user;
                 } else {
                     error_log("Password verification failed.");

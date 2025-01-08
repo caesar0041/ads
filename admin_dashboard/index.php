@@ -47,6 +47,7 @@
         <a href="#">Users</a>
         <a href="#">Reports</a>
         <a href="#">Settings</a>
+        <a href="../logout.php">Logout</a>
     </nav>
 
     <!-- Main Content -->

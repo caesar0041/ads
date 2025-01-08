@@ -19,3 +19,10 @@ create table if not exists users(
 INSERT INTO users (user_id, username, fname, lname, pw, role) VALUES (1001 ,'admin', 'admin', 'user', 'admin123', 'admin');
 update users set username = 'admin' where user_id = 1001;
 SELECT * FROM USERS;
+truncate users;
+update users set role='admin' where user_id=1001;
+alter table users auto_increment=5001;
+
+
+call authenticateuser('josepheanne5001');
+alter table users modify column pw varchar(255);

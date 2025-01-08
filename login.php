@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 require_once('templates/header1.php');
 require_once 'function.php';
 
@@ -12,8 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $users->authenticate($username, $password);
 
         if ($user) {
-//            $_SESSION['logged_in'] = true;
-//            $_SESSION['user'] = $user;
+            $_SESSION['logged_in'] = true;
+            $_SESSION['user'] = $user;
             header('Location: ' . BASE_URL . 'admin_dashboard/index.php?success=1');
             exit;
         } else {
