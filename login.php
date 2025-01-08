@@ -8,20 +8,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $users = new User();
-        $user = $users->authenticate($username, $password);
+        $db = new Database();
+        $user = new User($db->connect());
+        $authenticatedUser = $user->authenticate($username, $password);
 
-        if ($user) {
+        if ($authenticatedUser) {
             $_SESSION['logged_in'] = true;
-            $_SESSION['user'] = $user;
-            header('Location: ' . BASE_URL . 'admin_dashboard/index.php?success=1');
-            exit;
+            $_SESSION['user_role'] = $authenticatedUser['role'];
+            $_SESSION['username'] = $username;
+            $_SESSION['name'] = $authenticatedUser['full_name'];
+            $_SESSION['user_id'] = $authenticatedUser['user_id'];
+
+            if ($_SESSION['user_role'] == 'admin') {
+                header("Location: admin_dashboard/index.php");
+            } elseif ($_SESSION['user_role'] == 'customer') {
+                header("Location: customer_dashboard/index.php");
+            } else {
+                header("Location: login.php?error=1");
+                die("Invalid user role.");
+            }
         } else {
             $error_message = "Invalid username or password. Please try again.";
         }
     }
 }
 ?>
+
 <section class="hero-section set-bg" data-setbg="<?php echo BASE_URL; ?>assets/bootstrap/img/bg.jpg">
 <div class="page-area login-page">
     <div class="container spad">

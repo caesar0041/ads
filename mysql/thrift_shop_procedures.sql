@@ -13,15 +13,13 @@ BEGIN
     VALUES (p_username, p_first_name, p_last_name, p_password, NOW());
 END //	
 
-CREATE PROCEDURE AuthenticateUser(
-    IN p_username VARCHAR(50),
-    IN p_password VARCHAR(255),
-    OUT p_user_id INT
-)
+CREATE PROCEDURE AuthenticateUser(IN p_username VARCHAR(50))
 BEGIN
-    SELECT user_id INTO p_user_id
+    SELECT user_id, username, pw, role, full_name
     FROM users
-    WHERE username = p_username AND pw = p_password;
+    WHERE username = p_username;
 END //
 
+
 DELIMITER ;
+call authenticateuser('admin');

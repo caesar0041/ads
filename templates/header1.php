@@ -1,4 +1,5 @@
-<?php require_once('config.php'); ?>
+<?php require_once('config.php'); 
+require_once ('function.php');?>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -44,7 +45,7 @@
 				<li><a href="<?php echo BASE_URL;?>">Home</a></li>
 				<li><a href="<?php echo BASE_URL;?>browse.php">BROWSE</a></li>
 				<li><a href="<?php echo BASE_URL;?>login.php">SIGN IN</a></li>
-				<li><a href="<?php echo BASE_URL;?>contact.php">Contact</a></li>
+				<li><a href="<?php echo BASE_URL;?>about.php">ABOUT</a></li>
 			</ul>
 		</div>
 	</header>
