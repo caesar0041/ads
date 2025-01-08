@@ -8,10 +8,10 @@
             <a class="navbar-brand" href="#">Admin Dashboard</a>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Notifications</a>
+                    <a class="nav-link" href="<?php echo BASE_URL;?>">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="<?php echo BASE_URL;?>">Logout(??)</a>
                 </li>
             </ul>
         </nav>

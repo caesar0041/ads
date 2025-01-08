@@ -8,6 +8,8 @@ require_once ('function.php');?>
 	<meta charset="UTF-8">
 <!--	<link href="<?php echo BASE_URL;?>assets/bootstrap/img/favicon.ico" rel="shortcut icon"/> -->
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
 	<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/bootstrap/css/bootstrap.min.css"/>
@@ -15,6 +17,7 @@ require_once ('function.php');?>
 	<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/bootstrap/css/owl.carousel.css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/bootstrap/css/style.css"/>
 	<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/bootstrap/css/animate.css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 <body>
@@ -33,12 +36,9 @@ require_once ('function.php');?>
 				<i class="fa fa-bars"></i>
 			</div>
 			<div class="header-right d-flex align-items-center">
-				<a href="cart.php" class="card-bag mr-3"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/icons/bag.png" alt=""><span>2</span></a>
-				<form action="search.php" method="get" class="d-flex align-items-center">
-                	<input type="text" name="query" class="form-control form-control-sm me-2" placeholder="Search...">
-					<a href="#" class="search"><img src="<?php echo BASE_URL;?>assets/bootstrap/img/icons/search.png" alt=""></a>
-				</form>
-				
+				<a href="cart.php" class="bi bi-cart-dash-fill text-decoration-none text-white card-bag mr-2" style="font-size: 1.7rem;"><span>2</span>
+				</a>
+				<a href="login.php" class="bi bi-person-circle text-decoration-none text-white" style="font-size: 1.7rem;"></a>
 			</div>
 			<!-- site menu -->
 			<ul class="main-menu">
