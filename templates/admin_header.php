@@ -57,7 +57,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
     <!-- Sidebar -->
     <nav class="sidebar d-flex flex-column p-3">
         <h4 class="mb-3">(insert logo)</h4>
-        <a href="<?php echo BASE_URL;?>admin_dashboard/index.php"><i class="bi bi-house-fill"> </i>Dashboard</a>
         <a href="<?php echo BASE_URL;?>admin_dashboard/users.php"><i class="bi bi-people-fill"> </i>Users</a>
         <a href="<?php echo BASE_URL;?>admin_dashboard/product.php"><i class="bi bi-bag-fill"> </i>Products</a>
         <a href="<?php echo BASE_URL;?>admin_dashboard/order.php"><i class="bi bi-wallet-fill"> </i>Orders</a>

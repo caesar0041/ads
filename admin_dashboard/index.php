@@ -1,6 +1,20 @@
 <?php require_once('../templates/admin_header.php');
 
 ?>
+    <!-- Main Content -->
+    <div class="flex-grow-1">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light navbar-custom px-4">
+            <a class="navbar-brand" href="#">Admin Dashboard</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL;?>">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo BASE_URL;?>">Logout(??)</a>
+                </li>
+            </ul>
+        </nav>
 
         <!-- Content -->
         <div class="container mt-4">
