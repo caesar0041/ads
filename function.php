@@ -1,13 +1,14 @@
+
 <?php
 class Database {
     private static $conn;
 
     public static function connect() {
         if (!self::$conn) {
-            $host = '127.0.0.1:3307';
-            $dbname = 'thrift_shop';
+            $host = '127.0.0.1';
+            $dbname = 'ads_final';
             $user = 'root';
-            $pass = '04129';
+            $pass = '';
             $dsn = "mysql:host=$host;dbname=$dbname";
             try {
                 self::$conn = new PDO($dsn, $user, $pass);

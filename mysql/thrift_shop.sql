@@ -82,5 +82,7 @@ CREATE TABLE IF NOT EXISTS audit_trail_customer (
 
 
 
-
+insert into users (username, fname, lname, role, pw) values ('admin','admin','user','admin','$2y$10$8V7R3TcmP3v3RjaftEeVK.cuSO3Z0kUxhdCce3bwPcI8llXQ5tv9O');
+select * from users;
+delete from users where user_id=1;
 show tables;

@@ -1,5 +1,7 @@
 <?php require_once('templates/header1.php');
-require_once 'function.php';
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 
 if (isset($_POST['save'])) {
     $username = $_POST['username'];
@@ -16,6 +18,11 @@ if (isset($_POST['save'])) {
             exit;
         } else {
             echo "Error registering user.";
+            echo "Username: $username";
+            echo "First Name: $first_name";
+            echo "Last Name: $last_name";
+            echo "Password (Hashed): $hashed_password";
+
         }
     }
 ?>
