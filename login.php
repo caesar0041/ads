@@ -18,6 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['name'] = $authenticatedUser['full_name'];
             $_SESSION['user_id'] = $authenticatedUser['user_id'];
 
+            $user->trackSession($authenticatedUser['user_id'], 'login');
+
             if ($_SESSION['user_role'] == 'admin') {
                 header("Location: admin_dashboard/index.php");
             } elseif ($_SESSION['user_role'] == 'customer') {
