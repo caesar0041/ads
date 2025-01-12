@@ -1,7 +1,4 @@
 <?php require_once('templates/header1.php');
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 
 if (isset($_POST['save'])) {
     $username = $_POST['username'];

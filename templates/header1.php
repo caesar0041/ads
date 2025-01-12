@@ -1,5 +1,8 @@
 <?php require_once('config.php'); 
-require_once ('function.php');?>
+require_once ('function.php');
+session_start();
+
+?>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -39,7 +42,26 @@ require_once ('function.php');?>
 			<div class="header-right d-flex align-items-center">
 				<a href="cart.php" class="bi bi-cart-dash-fill text-decoration-none text-white card-bag mr-2" style="font-size: 1.7rem;"><span>2</span>
 				</a>
-				<a href="login.php" class="bi bi-person-circle text-decoration-none text-white" style="font-size: 1.7rem;"></a>
+				<a href="				<?php
+            // Check if the user is logged in
+            if (isset($_SESSION['user_role'])) {
+                if ($_SESSION['user_role'] === 'admin') {
+                    echo BASE_URL . 'admin_dashboard/';
+                } elseif ($_SESSION['user_role'] === 'customer') {
+                    echo BASE_URL . 'customer_dashboard/';
+                }
+            } else {
+                // Redirect to login if no session exists
+                echo BASE_URL . 'login.php';
+            }
+        ?>" class="bi bi-person-circle text-decoration-none text-white" style="font-size: 1.7rem;"></a>
+				<p class="d-flex ml-2 my-0 text-white"><?php
+					if (isset($_SESSION['user_id'])) {
+						echo 'Welcome, ' . $_SESSION['username'];
+					} else {
+						echo 'Welcome, Guest';
+					}
+				?></p>
 			</div>
 			<!-- site menu -->
 			<ul class="main-menu">

@@ -93,7 +93,7 @@ class User {
 
     public function getUserById($user_id) {
         try {
-            $query = $this->conn->prepare('SELECT * FROM users WHERE id = :user_id');
+            $query = $this->conn->prepare('SELECT * FROM users WHERE user_id = :user_id');
             $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
             $query->execute();
             return $query->fetch(PDO::FETCH_ASSOC);
@@ -102,6 +102,29 @@ class User {
             return false;
         }
     }
+
+    public function update($user_id, $username, $first_name, $last_name, $password) {
+        try {
+            // Update user details in the database
+            $query = $this->conn->prepare('
+                UPDATE users 
+                SET username = :username, fname = :first_name, lname = :last_name, pw = :password
+                WHERE user_id = :user_id
+            ');
+            $query->bindParam(':username', $username);
+            $query->bindParam(':first_name', $first_name); // Corrected placeholder
+            $query->bindParam(':last_name', $last_name);   // Corrected placeholder
+            $query->bindParam(':password', $password);     // Corrected placeholder
+            $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    
+            return $query->execute();
+        } catch (PDOException $e) {
+            error_log("Error in updateUserProfile: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    
     
 }
 
@@ -201,9 +224,9 @@ class Cart {
     public function getCartItems($user_id) {
         try {
             $query = $this->conn->prepare("
-                SELECT c.cart_id, p.id as product_id, c.user_id, p.product_name, p.price, c.quantity
+                SELECT c.cart_id, p.product_id AS product_id, c.user_id, p.product_name AS product_name, p.price, c.quantity
                 FROM cart c
-                JOIN products p ON c.product_id = p.id
+                JOIN products p ON c.product_id = p.product_id
                 WHERE c.user_id = :user_id
             ");
             $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -214,6 +237,7 @@ class Cart {
             return [];
         }
     }
+    
 
     public function addToCart($user_id, $product_id, $quantity) {
         try {
@@ -224,7 +248,7 @@ class Cart {
             return $query->execute();
         } catch (PDOException $e) {
             error_log("Error in addToCart: " . $e->getMessage());
-            return false;
+            throw new Exception("Failed to add item to cart. Please try again.");
         }
     }
 
@@ -252,16 +276,145 @@ class Cart {
             return false;
         }
     }
+    
 
     // Clear all items for a specific user's cart
     public function clearCart($user_id) {
         try {
-            $query = $this->conn->prepare('CALL ClearCart(:user_id);');
-            $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            return $query->execute();
+            $query = 'DELETE FROM cart WHERE user_id = :user_id;';
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
+            error_log("Error clearing cart: " . $e->getMessage());
+            return false;
+        }
+      
+    }
+    
+
+    public function getCartId($user_id) {
+
+        // Query to get the cart_id for the user
+        $query = "SELECT cart_id FROM cart WHERE user_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $user_id); // 'i' for user_id (int)
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return $row['cart_id'];
+        } else {
+            throw new Exception("Cart not found for the user.");
+        }
+    }
+}
+
+class Order {
+    private $conn;
+
+    public function __construct() {
+        $this->conn = Database::connect();
+        if ($this->conn === null) {
+            throw new Exception("Failed to connect to the database.");
+        }
+    }
+
+    public function placeOrder($cart_id, $total_price) {
+        try {
+            $query = "CALL PlaceOrder(:cart_id, :total_price);";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':cart_id', $cart_id, PDO::PARAM_INT);
+            $stmt->bindParam(':total_price', $total_price);
+            $stmt->execute();
+    
+            if ($stmt->rowCount() > 0) {
+                return $this->conn->lastInsertId();
+            } else {
+                error_log("PlaceOrder procedure returned no affected rows for cart_id: $cart_id");
+                return false;
+            }
         } catch (PDOException $e) {
-            error_log("Error in clearCart function: " . $e->getMessage());
+            error_log("Error in placeOrder: " . $e->getMessage());
             return false;
         }
     }
+        // Add items to an order
+        public function addOrderItems($order_id, $items) {
+            try {
+                $query = $this->conn->prepare("
+                    INSERT INTO order_items (order_id, product_id, quantity, price)
+                    VALUES (:order_id, :product_id, :quantity, :price)
+                ");
+                foreach ($items as $item) {
+                    $query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                    $query->bindParam(':product_id', $item['product_id'], PDO::PARAM_INT);
+                    $query->bindParam(':quantity', $item['quantity'], PDO::PARAM_INT);
+                    $query->bindParam(':price', $item['price']);
+                    $query->execute();
+                }
+                return true;
+            } catch (PDOException $e) {
+                error_log("Error in addOrderItems: " . $e->getMessage());
+                return false;
+            }
+        }
+    
+        // Retrieve all orders for a user
+        public function getOrdersByUser($user_id) {
+            try {
+                $query = $this->conn->prepare("
+                    SELECT order_id, total_price, status, ordered_at 
+                    FROM orders 
+                    WHERE user_id = :user_id 
+                    ORDER BY ordered_at DESC
+                ");
+                $query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $query->execute();
+                return $query->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                error_log("Error in getOrdersByUser: " . $e->getMessage());
+                return [];
+            }
+        }
+    
+        // Retrieve order details by ID
+        public function getOrderDetails($order_id) {
+            try {
+                $query = $this->conn->prepare("
+                    SELECT * FROM orders WHERE order_id = :order_id
+                ");
+                $query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                $query->execute();
+                return $query->fetch(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                error_log("Error in getOrderDetails: " . $e->getMessage());
+                return false;
+            }
+        }
+    
+        // Cancel an order
+        public function cancelOrder($order_id) {
+            try {
+                $query = $this->conn->prepare("CALL CancelOrder(:order_id);");
+                $query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                return $query->execute();
+            } catch (PDOException $e) {
+                error_log("Error in cancelOrder: " . $e->getMessage());
+                return false;
+            }
+        }
+    
+        // Complete an order
+        public function completeOrder($order_id) {
+            try {
+                $query = $this->conn->prepare("CALL CompleteOrder(:order_id);");
+                $query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+                return $query->execute();
+            } catch (PDOException $e) {
+                error_log("Error in completeOrder: " . $e->getMessage());
+                return false;
+            }
+        }
 }

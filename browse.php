@@ -32,29 +32,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
                 <?php if (!empty($products)): ?>
                     <?php foreach ($products as $product): ?>
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100 shadow-sm">
-                                <?php if (!empty($product['image'])): ?>
-                                    <img class="card-img-top" 
-                                         src="../uploads/<?php echo htmlspecialchars($product['image']); ?>" 
-                                         alt="<?php echo htmlspecialchars($product['product_name']); ?>">
-                                <?php else: ?>
-                                    <img class="card-img-top" 
-                                         src="<?php echo BASE_URL; ?>assets/bootstrap/img/placeholder.png" 
-                                         alt="Placeholder">
-                                <?php endif; ?>
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($product['product_name']); ?></h5>
-                                    <p class="card-text"><strong>Category:</strong> <?php echo htmlspecialchars($product['category']); ?></p>
-                                    <p class="card-text"><strong>Quantity:</strong> <?php echo htmlspecialchars($product['quantity']); ?></p>
-                                    <p class="card-text"><strong>Price:</strong> $<?php echo number_format($product['price'], 2); ?></p>
+                            <a href="product_details.php?product_id=<?php echo htmlspecialchars($product['product_id']); ?>" class="card-link" style="text-decoration: none; color: inherit;">
+                                <div class="card h-100 shadow-sm">
+                                    <?php if (!empty($product['image'])): ?>
+                                        <img class="card-img-top" 
+                                             src="../uploads/<?php echo htmlspecialchars($product['image']); ?>" 
+                                             alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                    <?php else: ?>
+                                        <img class="card-img-top" 
+                                             src="<?php echo BASE_URL; ?>assets/bootstrap/img/placeholder.png" 
+                                             alt="Placeholder">
+                                    <?php endif; ?>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo htmlspecialchars($product['product_name']); ?></h5>
+                                        <p class="card-text"><strong>Category:</strong> <?php echo htmlspecialchars($product['category']); ?></p>
+                                        <p class="card-text"><strong>Quantity:</strong> <?php echo htmlspecialchars($product['quantity']); ?></p>
+                                        <p class="card-text"><strong>Price:</strong> $<?php echo number_format($product['price'], 2); ?></p>
+                                    </div>
                                 </div>
-                                <div class="card-footer text-center">
+                            </a>
+                            <div class="card-footer text-center">
                                 <form action="" method="POST">
-                                    <input type="hidden" name="product_id" value="1">
+                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['product_id']); ?>">
                                     <input type="hidden" name="quantity" value="1">
                                     <button type="submit" name="add">Add to Cart</button>
                                 </form>
-                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
